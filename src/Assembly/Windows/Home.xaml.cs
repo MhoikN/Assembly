@@ -121,7 +121,7 @@ namespace Assembly.Windows
 			{
 				if (activeContent.Content != null)
 					UpdateTitleText(activeContent.Title.Replace("__", "_")
-						.Replace(".mapinfo", "").Replace(".map", "").Replace(".campaign", "").Replace(".blf", ""));
+						.Replace(".mapinfo", "").Replace(".scenario", "").Replace(".map", "").Replace(".campaign", "").Replace(".blf", ""));
 
 				if (activeContent != null && activeContent.Title == "Start Page")
 					((StartPage)activeContent.Content).UpdateRecents();
@@ -552,7 +552,8 @@ namespace Assembly.Windows
 			{ ".ascpatch", (home, path) => home.AddPatchTabModule(path) },
 			{ ".patchdat", (home, path) => home.AddPatchTabModule(path) },
 			{ ".module", (home, path) => home.AddCacheTabModule(path) },
-			{ ".yelo", (home, path) => home.AddCacheTabModule(path) }
+			{ ".yelo", (home, path) => home.AddCacheTabModule(path) },
+			{ ".scenario", (home, path) => home.AddGuerillaTagTabModule(path) }
 		};
 
 		/// <summary>
@@ -667,6 +668,26 @@ namespace Assembly.Windows
 			newCacheTab.Closing += HaloMap_Closing;
 			documentManager.Children.Add(newCacheTab);
 			documentManager.SelectedContentIndex = documentManager.IndexOfChild(newCacheTab);
+		}
+
+		/// <summary>
+		///     Add a new loose Halo tag source viewer.
+		/// </summary>
+		/// <param name="scenarioLocation">Path to the root scenario tag.</param>
+		public void AddGuerillaTagTabModule(string scenarioLocation)
+		{
+			if (ContentModuleExists(scenarioLocation))
+				return;
+
+			var newScenarioTab = new LayoutDocument
+			{
+				ContentId = scenarioLocation,
+				Title = "",
+				ToolTip = scenarioLocation
+			};
+			newScenarioTab.Content = new GuerillaTagMap(scenarioLocation, newScenarioTab);
+			documentManager.Children.Add(newScenarioTab);
+			documentManager.SelectedContentIndex = documentManager.IndexOfChild(newScenarioTab);
 		}
 
 		/// <summary>

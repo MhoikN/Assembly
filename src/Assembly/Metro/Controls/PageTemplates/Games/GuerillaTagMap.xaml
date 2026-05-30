@@ -1,0 +1,137 @@
+<UserControl x:Class="Assembly.Metro.Controls.PageTemplates.Games.GuerillaTagMap"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:DataBind="clr-namespace:Assembly.Metro.Controls.PageTemplates.Games"
+             xmlns:Converters="clr-namespace:Assembly.Helpers.Converters"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:MetroTreeView="clr-namespace:Assembly.Metro.Controls.WPFTreeView"
+             mc:Ignorable="d"
+             Background="#28282b"
+             d:DesignWidth="1000" d:DesignHeight="600">
+	<UserControl.Resources>
+		<Converters:TagDescriptionCleanup x:Key="IValueTagDescriptionCleanup" />
+	</UserControl.Resources>
+	<Grid>
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="360" />
+				<ColumnDefinition Width="2" />
+				<ColumnDefinition Width="*" />
+			</Grid.ColumnDefinitions>
+
+			<Grid Grid.Column="0" Background="#28282b">
+				<TabControl Background="{x:Null}" BorderBrush="{DynamicResource ExtryzeAccentBrush}"
+				            Foreground="White" BorderThickness="0,2,0,0" Margin="0" Padding="0">
+					<TabItem Header="Header" Style="{StaticResource MetroHeaderTabItem}" Height="16" Margin="20,0,-20,-8">
+						<ScrollViewer VerticalScrollBarVisibility="Auto">
+							<ItemsControl x:Name="panelHeaderItems" ItemsSource="{Binding HeaderItems}" Margin="12,14,12,8">
+								<ItemsControl.ItemTemplate>
+									<DataTemplate>
+										<StackPanel Margin="0,0,0,10">
+											<TextBlock Text="{Binding Title}" Foreground="#FF878787" FontSize="11"
+											           FontFamily="{DynamicResource MetroFontRegular}" />
+											<TextBlock Text="{Binding Data}" Foreground="White" FontSize="13"
+											           TextWrapping="Wrap" FontFamily="{DynamicResource MetroFontRegular}" />
+										</StackPanel>
+									</DataTemplate>
+								</ItemsControl.ItemTemplate>
+							</ItemsControl>
+						</ScrollViewer>
+					</TabItem>
+					<TabItem Header="Tags" Style="{StaticResource MetroHeaderTabItem}" Height="16" Margin="20,0,-20,-8">
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto" />
+								<RowDefinition Height="*" />
+							</Grid.RowDefinitions>
+							<TextBox x:Name="txtSearch" Grid.Row="0" Margin="12,12,12,8"
+							         Background="#333337" Foreground="White" BorderBrush="#FF545456"
+							         TextChanged="txtSearch_TextChanged" />
+							<MetroTreeView:MetroTreeView x:Name="treeTags" Grid.Row="1" ItemsSource="{Binding VisibleTags}"
+							                             SelectedItemChanged="treeTags_SelectedItemChanged"
+							                             Background="{x:Null}" BorderBrush="{DynamicResource ExtryzeAccentBrushSecondary}"
+							                             BorderThickness="2" Foreground="White"
+							                             VirtualizingStackPanel.IsVirtualizing="True"
+							                             VirtualizingStackPanel.VirtualizationMode="Standard"
+							                             Margin="8,0,8,8">
+								<MetroTreeView:MetroTreeView.Resources>
+									<HierarchicalDataTemplate DataType="{x:Type DataBind:GuerillaSourceTagGroup}" ItemsSource="{Binding Children}">
+										<TextBlock>
+											<Run Text="{Binding GroupMagic}" />
+											<Run Foreground="{StaticResource TextBrushSecondary}" Text=" - " />
+											<Run Foreground="{StaticResource TextBrushSecondary}"
+											     Text="{Binding Path=Description, Converter={StaticResource IValueTagDescriptionCleanup}}" />
+										</TextBlock>
+									</HierarchicalDataTemplate>
+									<DataTemplate DataType="{x:Type DataBind:GuerillaSourceTagEntry}">
+										<TextBlock Text="{Binding TagFileName}" ToolTip="{Binding TagToolTip}" />
+									</DataTemplate>
+								</MetroTreeView:MetroTreeView.Resources>
+								<MetroTreeView:MetroTreeView.ItemContainerStyle>
+									<Style TargetType="{x:Type MetroTreeView:MetroTreeViewItem}"
+									       BasedOn="{StaticResource {x:Type MetroTreeView:MetroTreeViewItem}}">
+										<EventSetter Event="MouseDoubleClick" Handler="treeTags_ItemDoubleClick" />
+									</Style>
+								</MetroTreeView:MetroTreeView.ItemContainerStyle>
+							</MetroTreeView:MetroTreeView>
+						</Grid>
+					</TabItem>
+				</TabControl>
+			</Grid>
+
+			<GridSplitter Grid.Column="1" Width="2" Background="#FF545456" Foreground="{x:Null}" ResizeDirection="Columns" />
+
+			<Grid Grid.Column="2" Background="#28282b" Margin="0">
+				<DockPanel>
+					<StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="18,14,18,4">
+						<Button x:Name="btnSaveTagProperties" Content="Save Changes" Width="110"
+						        Click="btnSaveTagProperties_Click" />
+						<Button x:Name="btnReloadTagProperties" Content="Reload" Width="72" Margin="6,0,0,0"
+						        Click="btnReloadTagProperties_Click" />
+						<TextBlock x:Name="lblPropertyStatus" Foreground="#FF878787" FontSize="12"
+						           FontFamily="{DynamicResource MetroFontRegular}" Margin="12,3,0,0" />
+					</StackPanel>
+					<ScrollViewer DockPanel.Dock="Top" VerticalScrollBarVisibility="Auto">
+						<StackPanel Margin="18,4,18,18">
+						<TextBlock x:Name="lblSelectedTag" Foreground="White" FontSize="20"
+						           FontFamily="{DynamicResource MetroFontSemiLight}" Text="Raw tag source" />
+						<TextBlock x:Name="lblSelectedDetails" Foreground="#FF878787" FontSize="12"
+						           FontFamily="{DynamicResource MetroFontRegular}" Margin="0,4,0,16"
+						           TextWrapping="Wrap" />
+						<ItemsControl x:Name="panelSelectedFields">
+							<ItemsControl.ItemTemplate>
+								<DataTemplate>
+									<Border BorderBrush="#FF3B3B3E" BorderThickness="0,0,0,1" Padding="0,5,0,5">
+										<Grid>
+											<Grid.ColumnDefinitions>
+												<ColumnDefinition Width="210" />
+												<ColumnDefinition Width="110" />
+												<ColumnDefinition Width="*" />
+											</Grid.ColumnDefinitions>
+											<TextBlock Grid.Column="0" Text="{Binding Name}" Foreground="White"
+											           TextWrapping="Wrap" FontFamily="{DynamicResource MetroFontRegular}" />
+											<TextBlock Grid.Column="1" Text="{Binding Kind}" Foreground="#FF878787"
+											           FontFamily="{DynamicResource MetroFontRegular}" />
+											<TextBox Grid.Column="2" Text="{Binding EditedValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+											         IsEnabled="{Binding IsEditable}" Background="#333337" BorderBrush="#FF545456"
+											         Foreground="#FFD8D8D8" FontFamily="{DynamicResource MetroFontRegular}" />
+										</Grid>
+									</Border>
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+						</ItemsControl>
+					</StackPanel>
+					</ScrollViewer>
+				</DockPanel>
+			</Grid>
+		</Grid>
+
+		<Grid x:Name="doingAction" Background="#BC2D2D30" Visibility="Collapsed">
+			<TextBlock x:Name="lblDoingAction" FontFamily="{DynamicResource MetroFontRegular}" Text="Loading Tags..."
+			           Foreground="#FF878787" FontSize="12" Margin="0,10,0,0" TextAlignment="Center"
+			           HorizontalAlignment="Center" VerticalAlignment="Top" />
+			<ProgressBar Height="4" VerticalAlignment="Top" HorizontalAlignment="Stretch" IsIndeterminate="True" />
+		</Grid>
+	</Grid>
+</UserControl>

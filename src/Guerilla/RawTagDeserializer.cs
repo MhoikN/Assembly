@@ -132,6 +132,7 @@ namespace Guerilla
 
 				var absoluteOffset = baseOffset + definition.Offset;
 				var field = new RawTagField(definition.Kind, definition.Name, absoluteOffset);
+				field.Size = definition.Size;
 				fields.Add(field);
 
 				try

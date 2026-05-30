@@ -2648,6 +2648,9 @@
     <Compile Include="Metro\Controls\PageTemplates\Games\HaloInfo.xaml.cs">
       <DependentUpon>HaloInfo.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Metro\Controls\PageTemplates\Games\GuerillaTagMap.xaml.cs">
+      <DependentUpon>GuerillaTagMap.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Metro\Controls\PageTemplates\Games\HaloMap.xaml.cs">
       <DependentUpon>HaloMap.xaml</DependentUpon>
     </Compile>
@@ -3014,6 +3017,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Metro\Controls\PageTemplates\Games\GuerillaTagMap.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Metro\Controls\PageTemplates\Games\HaloMap.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -3322,6 +3329,10 @@
       <Project>{6b105ab9-84a0-4774-b319-75e9cab3db4b}</Project>
       <Name>Blamite</Name>
       <LibZ>True</LibZ>
+    </ProjectReference>
+    <ProjectReference Include="..\Guerilla\Guerilla.csproj">
+      <Project>{72D8ED88-949F-44AE-B8A9-79F83F3190CB}</Project>
+      <Name>Guerilla</Name>
     </ProjectReference>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
       <Visible>False</Visible>
